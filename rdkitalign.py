@@ -8,6 +8,11 @@ from pymol import cmd
 import rdkit
 import rdkit.Chem
 from rdkit.Chem import rdMolAlign
+try:
+    import numpy as np
+    HAS_NP = True
+except ImportError:
+    HAS_NP = False
 
 
 def obj_to_rdmol(obj, state=-1):
@@ -46,10 +51,23 @@ EXAMPLES
     print("Aligning %s to %s with RDKit" % (mobile, target))
     mobile_mol = obj_to_rdmol(mobile, int(mobile_state))
     target_mol = obj_to_rdmol(target, int(target_state))
-    rmsd, trans_matrix = rdMolAlign.GetAlignmentTransform(
-        mobile_mol, target_mol, reflect=bool(reflect), maxIters=int(max_iters))
+    try:
+        rmsd, trans_matrix = rdMolAlign.GetAlignmentTransform(
+            mobile_mol, target_mol, reflect=bool(int(reflect)),
+            maxIters=int(max_iters))
+    except RuntimeError:
+        print " RDKitAlign-Error: alignment failed."
+        return False
     cmd.transform_selection(mobile, trans_matrix.flatten().tolist(),
                             homogenous=1)
+    if HAS_NP:
+        inv_array_string = "["+", ".join(
+            ["%.4g" % x for x
+             in np.linalg.inv(trans_matrix).flatten().tolist()])+"]"
+        print("Molecules are aligned. To reverse the alignment, run:")
+        print('cmd.transform_selection("%s", %s, homogenous=1)' % (
+            mobile, inv_array_string))
+
     print("RMSD: %.4f" % rmsd)
 
 cmd.extend("rdkitalign", rdkitalign)

@@ -23,6 +23,10 @@ When PyMOL starts up, all of these scripts should be available in PyMOL.
 
 ##Script Categories##
 
+###Protein Alignment###
+- `align_to_axis`
+    + Transform protein so that an atom selection (default N-terminal nitrogen) is located at the origin and the center of mass is located along a provided axis (default y-axis).
+
 ###Small Molecule Alignment###
 _Note: These scripts require that the RDKit distribution be in your `$PYTHONPATH` and compiled for the same version of Python as PyMOL._
 - `rdkitalign`

@@ -129,6 +129,7 @@ EXAMPLES
                 "AlignToAxisError: Provided axis is of unknown format: %s." % (
                     repr(axis)))
             return False
+    target_vect = as_unit(target_vect)
 
     cmd.reset()
 
@@ -140,7 +141,7 @@ EXAMPLES
         return False
     origin_coord = np.asarray(origin_coord_list[0], dtype=np.float)
 
-    com_coord = np.asarray(get_com(obj), dtype=float)
+    com_coord = np.asarray(get_com(obj), dtype=np.float)
     com_vect = com_coord - origin_coord
     pre_trans_vect = -com_coord
     post_trans_vect = target_vect * np.linalg.norm(com_vect)
@@ -149,7 +150,12 @@ EXAMPLES
                                        post_trans_vect)
     cmd.transform_selection(obj, trans_matrix.flatten().tolist(),
                             homogenous=0)
-    com_vect = np.asarray(get_com(obj), dtype=float)
+
+    # ensure atom_sele is at origin
+    origin_coord_list = cmd.get_model(atom_sel, 1).get_coord_list()
+    origin_coord = np.asarray(cmd.get_model(atom_sel, 1).get_coord_list()[0],
+                              dtype=np.float)
+    cmd.translate((-origin_coord).tolist(), obj)
 
     cmd.reset()
 

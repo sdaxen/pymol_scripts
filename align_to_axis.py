@@ -68,7 +68,7 @@ def create_rot_matrix(v0, v1):
     cos_ang = np.dot(u0, u1)
     skew = np.array([[ 0.  , -o[2],   o[1] ],
                      [ o[2],  0.  ,  -o[0] ],
-                     [-o[1],  o[0],   0.   ]], dtype=np.float)
+                     [-o[1],  o[0],   0.   ]], dtype=np.float) / sin_ang
     rot = (cos_ang * np.identity(3, dtype=np.float) + sin_ang * skew +
            (1 - cos_ang) * np.outer(o, o))
     return rot
@@ -150,12 +150,6 @@ EXAMPLES
                                        post_trans_vect)
     cmd.transform_selection(obj, trans_matrix.flatten().tolist(),
                             homogenous=0)
-
-    # ensure atom_sele is at origin
-    origin_coord_list = cmd.get_model(atom_sel, 1).get_coord_list()
-    origin_coord = np.asarray(cmd.get_model(atom_sel, 1).get_coord_list()[0],
-                              dtype=np.float)
-    cmd.translate((-origin_coord).tolist(), obj)
 
     cmd.reset()
 

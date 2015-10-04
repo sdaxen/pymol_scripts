@@ -64,6 +64,8 @@ def create_rot_matrix(v0, v1):
     u0 = as_unit(v0)
     u1 = as_unit(v1)
     o = np.cross(u0, u1)
+    if np.all(o == 0.):
+        return np.identity(3, dtype=np.float)
     sin_ang = np.linalg.norm(o)
     cos_ang = np.dot(u0, u1)
     skew = np.array([[ 0.  , -o[2],   o[1] ],

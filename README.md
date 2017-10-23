@@ -1,7 +1,7 @@
 # pymol_scripts
 Scripts for performing useful tasks within [PyMOL](https://www.pymol.org/ "PyMOL")
 
-##Setup##
+## Setup
 
 Assuming this repo is located in your home directory, add the following to your `~/.pymolrc` file:
 
@@ -21,13 +21,13 @@ python end
 
 When PyMOL starts up, all of these scripts should be available in PyMOL.
 
-##Script Categories##
+## Script Categories
 
-###Protein Alignment###
+### Protein Alignment
 - `align_to_axis`
     + Transform protein so that an atom selection (default N-terminal nitrogen) is located at the origin and the center of mass is located along a provided axis (default y-axis).
 
-###Small Molecule Alignment###
+### Small Molecule Alignment
 _Note: These scripts require that the RDKit distribution be in your `$PYTHONPATH` and compiled for the same version of Python as PyMOL._
 - `rdkitalign`
     + Align molecules using [RDKit](rdkit.org "RDKit")'s 3D molecular alignment. [See documentation](http://www.rdkit.org/Python_Docs/rdkit.Chem.rdMolAlign-module.html#AlignMol "RDKit AlignMol Documentation").
